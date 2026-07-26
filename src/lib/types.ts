@@ -153,4 +153,5 @@ export type Page =
   | { name: 'groups' }
   | { name: 'group'; groupId: string }
   | { name: 'saved' }
-  | { name: 'explore' };
+  | { name: 'explore' }
+  | { name: 'marketplace' };
