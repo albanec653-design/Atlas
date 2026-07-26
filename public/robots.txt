@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+
+Sitemap: https://atlas-4byr-hjybmnl53-atlas-d5b7.vercel.app/sitemap.xml
