@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Home, Users, MessageCircle, Bell, Menu, Plus, LogOut, Bookmark } from 'lucide-react';
+import { Search, Home, Users, MessageCircle, Bell, Menu, Plus, LogOut, Bookmark, Moon, Sun } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { Avatar } from '@/components/Avatar';
 import { useAuth } from '@/context/AuthContext';
 import { useNav } from '@/context/NavContext';
+import { useTheme } from '@/context/ThemeContext';
 import { unreadNotificationCount, fetchFriends, searchProfiles } from '@/lib/data';
 import type { Profile } from '@/lib/types';
 import { classNames } from '@/lib/utils';
@@ -11,6 +12,7 @@ import { classNames } from '@/lib/utils';
 export function TopBar() {
   const { profile, signOut } = useAuth();
   const { page, navigate } = useNav();
+  const { theme, toggleTheme } = useTheme();
   const [unread, setUnread] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,7 +56,7 @@ export function TopBar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
       <div className="flex items-center justify-between px-3 h-14 max-w-[2000px] mx-auto">
         {/* left: logo + search */}
         <div className="flex items-center gap-2 flex-1">
@@ -64,7 +66,7 @@ export function TopBar() {
           <div className="relative hidden sm:block">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              className="bg-gray-100 rounded-full pl-9 pr-4 py-2 w-48 lg:w-64 text-sm outline-none focus:w-72 transition-all"
+              className="bg-gray-100 dark:bg-gray-800 rounded-full pl-9 pr-4 py-2 w-48 lg:w-64 text-sm outline-none focus:w-72 transition-all dark:text-white"
               placeholder="Search Atlas"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setSearchOpen(true); }}
@@ -72,17 +74,17 @@ export function TopBar() {
               onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
             />
             {searchOpen && results.length > 0 && (
-              <div className="absolute top-full mt-1 left-0 right-0 bg-white rounded-lg shadow-xl border border-gray-200 py-2 max-h-80 overflow-y-auto z-50">
+              <div className="absolute top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 max-h-80 overflow-y-auto z-50">
                 {results.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => { navigate({ name: 'profile', userId: p.id }); setQuery(''); setResults([]); }}
-                    className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 text-left"
+                    className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-left"
                   >
                     <Avatar profile={p} size="sm" />
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{p.full_name}</p>
-                      <p className="text-xs text-gray-500 truncate">@{p.username}</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{p.full_name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{p.username}</p>
                     </div>
                   </button>
                 ))}
@@ -99,7 +101,7 @@ export function TopBar() {
               onClick={() => navigate({ name: item.name })}
               className={classNames(
                 'px-6 lg:px-8 py-2 rounded-lg flex items-center justify-center transition-colors relative',
-                isActive(item.name) ? 'text-[#1877F2] border-b-2 border-[#1877F2]' : 'text-gray-600 hover:bg-gray-100',
+                isActive(item.name) ? 'text-[#1877F2] border-b-2 border-[#1877F2]' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
               )}
               title={item.label}
             >
@@ -112,16 +114,16 @@ export function TopBar() {
         <div className="flex items-center gap-1 flex-1 justify-end">
           <button
             onClick={() => navigate({ name: 'profile', userId: profile.id })}
-            className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full pl-1 pr-2 py-1"
+            className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full pl-1 pr-2 py-1"
             title={profile.full_name}
           >
             <Avatar profile={profile} size="sm" />
-            <span className="hidden lg:block text-sm font-medium text-gray-700 max-w-[100px] truncate">{profile.full_name.split(' ')[0]}</span>
+            <span className="hidden lg:block text-sm font-medium text-gray-700 dark:text-gray-300 max-w-[100px] truncate">{profile.full_name.split(' ')[0]}</span>
           </button>
 
           <button
             onClick={() => navigate({ name: 'notifications' })}
-            className={classNames('relative p-2 rounded-full hover:bg-gray-100', page.name === 'notifications' && 'bg-gray-100')}
+            className={classNames('relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800', page.name === 'notifications' && 'bg-gray-100 dark:bg-gray-800')}
             title="Notifications"
           >
             <Bell size={20} />
@@ -132,20 +134,28 @@ export function TopBar() {
             )}
           </button>
 
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
           <div className="relative" ref={menuRef}>
-            <button onClick={() => setMenuOpen((s) => !s)} className="p-2 rounded-full hover:bg-gray-100" title="Menu">
+            <button onClick={() => setMenuOpen((s) => !s)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" title="Menu">
               <Menu size={20} />
             </button>
             {menuOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-gray-200 py-2 w-56 z-50" onMouseLeave={() => setMenuOpen(false)}>
+              <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 w-56 z-50" onMouseLeave={() => setMenuOpen(false)}>
                 <MenuItem icon={Home} label="Home" onClick={() => { navigate({ name: 'home' }); setMenuOpen(false); }} />
                 <MenuItem icon={Users} label="Friends" onClick={() => { navigate({ name: 'friends' }); setMenuOpen(false); }} />
                 <MenuItem icon={MessageCircle} label="Messages" onClick={() => { navigate({ name: 'messages' }); setMenuOpen(false); }} />
                 <MenuItem icon={Bell} label="Notifications" onClick={() => { navigate({ name: 'notifications' }); setMenuOpen(false); }} />
-                <div className="border-t border-gray-100 my-1" />
+                <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
                 <MenuItem icon={Bookmark} label="Saved posts" onClick={() => { navigate({ name: 'saved' }); setMenuOpen(false); }} />
                 <MenuItem icon={Users} label="My profile" onClick={() => { navigate({ name: 'profile', userId: profile.id }); setMenuOpen(false); }} />
-                <div className="border-t border-gray-100 my-1" />
+                <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
                 <MenuItem icon={LogOut} label="Log out" onClick={() => { signOut(); setMenuOpen(false); }} danger />
               </div>
             )}
@@ -154,12 +164,12 @@ export function TopBar() {
       </div>
 
       {/* mobile nav */}
-      <nav className="md:hidden flex items-center justify-around border-t border-gray-100">
+      <nav className="md:hidden flex items-center justify-around border-t border-gray-100 dark:border-gray-800">
         {navItems.map((item) => (
           <button
             key={item.name}
             onClick={() => navigate({ name: item.name })}
-            className={classNames('py-2 px-4 flex items-center justify-center', isActive(item.name) ? 'text-[#1877F2] border-t-2 border-[#1877F2]' : 'text-gray-600')}
+            className={classNames('py-2 px-4 flex items-center justify-center', isActive(item.name) ? 'text-[#1877F2] border-t-2 border-[#1877F2]' : 'text-gray-600 dark:text-gray-400')}
           >
             <item.icon size={22} />
           </button>
@@ -175,7 +185,7 @@ export function TopBar() {
 
 function MenuItem({ icon: Icon, label, onClick, danger }: { icon: typeof Home; label: string; onClick: () => void; danger?: boolean }) {
   return (
-    <button onClick={onClick} className={classNames('flex items-center gap-3 w-full px-3 py-2 text-sm hover:bg-gray-100', danger ? 'text-red-600' : 'text-gray-700')}>
+    <button onClick={onClick} className={classNames('flex items-center gap-3 w-full px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700', danger ? 'text-red-600' : 'text-gray-700 dark:text-gray-300')}>
       <Icon size={18} /> {label}
     </button>
   );

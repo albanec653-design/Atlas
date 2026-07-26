@@ -1,5 +1,6 @@
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { NavProvider, useNav } from '@/context/NavContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { AuthPage } from '@/pages/AuthPage';
 import { TopBar } from '@/components/TopBar';
 import { LeftSidebar, RightSidebar } from '@/components/Sidebars';
@@ -46,7 +47,7 @@ function Shell() {
   const isFullScreen = page.name === 'messages';
 
   return (
-    <div className="min-h-screen bg-[#f0f2f5]">
+    <div className="min-h-screen bg-[#f0f2f5] dark:bg-gray-950">
       <TopBar />
       {isFullScreen ? (
         <main>{renderPage()}</main>
@@ -63,10 +64,12 @@ function Shell() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NavProvider>
-        <Shell />
-      </NavProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <NavProvider>
+          <Shell />
+        </NavProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
