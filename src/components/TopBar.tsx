@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Home, Users, MessageCircle, Bell, Menu, Plus, LogOut, Bookmark, Moon, Sun } from 'lucide-react';
+import { Search, Home, Users, MessageCircle, Bell, Menu, Plus, LogOut, Bookmark, Moon, Sun, Compass } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { Avatar } from '@/components/Avatar';
 import { useAuth } from '@/context/AuthContext';
@@ -43,6 +43,7 @@ export function TopBar() {
 
   const navItems = [
     { name: 'home' as const, icon: Home, label: 'Home' },
+    { name: 'explore' as const, icon: Compass, label: 'Explore' },
     { name: 'friends' as const, icon: Users, label: 'Friends' },
     { name: 'groups' as const, icon: Users, label: 'Groups' },
     { name: 'messages' as const, icon: MessageCircle, label: 'Messages' },
@@ -149,6 +150,7 @@ export function TopBar() {
             {menuOpen && (
               <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 w-56 z-50" onMouseLeave={() => setMenuOpen(false)}>
                 <MenuItem icon={Home} label="Home" onClick={() => { navigate({ name: 'home' }); setMenuOpen(false); }} />
+                <MenuItem icon={Compass} label="Explore" onClick={() => { navigate({ name: 'explore' }); setMenuOpen(false); }} />
                 <MenuItem icon={Users} label="Friends" onClick={() => { navigate({ name: 'friends' }); setMenuOpen(false); }} />
                 <MenuItem icon={MessageCircle} label="Messages" onClick={() => { navigate({ name: 'messages' }); setMenuOpen(false); }} />
                 <MenuItem icon={Bell} label="Notifications" onClick={() => { navigate({ name: 'notifications' }); setMenuOpen(false); }} />

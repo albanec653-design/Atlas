@@ -152,4 +152,5 @@ export type Page =
   | { name: 'notifications' }
   | { name: 'groups' }
   | { name: 'group'; groupId: string }
-  | { name: 'saved' };
+  | { name: 'saved' }
+  | { name: 'explore' };

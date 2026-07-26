@@ -11,6 +11,7 @@ import { MessagesPage } from '@/pages/MessagesPage';
 import { NotificationsPage } from '@/pages/NotificationsPage';
 import { GroupsPage, GroupDetailPage } from '@/pages/GroupsPage';
 import { SavedPage } from '@/pages/SavedPage';
+import { ExplorePage } from '@/pages/ExplorePage';
 import { Logo } from '@/components/Logo';
 
 function Shell() {
@@ -40,6 +41,7 @@ function Shell() {
       case 'groups': return <GroupsPage />;
       case 'group': return <GroupDetailPage key={page.groupId} groupId={page.groupId} />;
       case 'saved': return <SavedPage />;
+      case 'explore': return <ExplorePage />;
       default: return <HomePage />;
     }
   };
