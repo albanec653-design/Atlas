@@ -4,6 +4,7 @@ import type { Post, ReactionType, Comment, Profile } from '@/lib/types';
 import { Avatar } from '@/components/Avatar';
 import { ReactionButton, ReactionSummary, getReactionMeta } from '@/components/Reactions';
 import { CommentSection } from '@/components/CommentSection';
+import { TextWithLinks } from '@/components/TextWithLinks';
 import { useAuth } from '@/context/AuthContext';
 import { useNav } from '@/context/NavContext';
 import { fetchComments, fetchReactionsForPosts, deletePost, toggleSavePost, isPostSaved } from '@/lib/data';
@@ -123,11 +124,15 @@ export function PostCard({ post, onDelete }: { post: Post; onDelete?: (id: strin
 
       {/* content */}
       {post.content && !post.background_color && (
-        <p className="px-3 pb-2 text-gray-800 whitespace-pre-wrap break-words">{post.content}</p>
+        <p className="px-3 pb-2 text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+          <TextWithLinks text={post.content} />
+        </p>
       )}
       {post.content && post.background_color && (
         <div className="min-h-[220px] flex items-center justify-center p-8 text-center" style={{ background: post.background_color }}>
-          <p className="text-2xl font-bold text-white whitespace-pre-wrap break-words leading-snug">{post.content}</p>
+          <p className="text-2xl font-bold text-white whitespace-pre-wrap break-words leading-snug">
+            <TextWithLinks text={post.content} />
+          </p>
         </div>
       )}
 
