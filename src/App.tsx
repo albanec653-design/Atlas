@@ -21,7 +21,7 @@ function Shell() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#f0f2f5] gap-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-black gap-4">
         <Logo size={64} />
         <p className="text-gray-400 text-sm">Loading Atlas…</p>
       </div>
@@ -51,7 +51,7 @@ function Shell() {
   const isFullScreen = page.name === 'messages';
 
   return (
-    <div className="min-h-screen bg-[#f0f2f5] dark:bg-gray-950">
+    <div className="min-h-screen bg-black">
       <TopBar />
       {isFullScreen ? (
         <main>{renderPage()}</main>

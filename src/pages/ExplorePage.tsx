@@ -72,7 +72,7 @@ export function ExplorePage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-[#1877F2] text-white'
+                  ? 'bg-primary text-white'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >
@@ -86,7 +86,7 @@ export function ExplorePage() {
       {/* Trending Topics */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-          <TrendingUp size={20} className="text-[#1877F2]" />
+          <TrendingUp size={20} className="text-primary" />
           Trending Topics
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -104,14 +104,14 @@ export function ExplorePage() {
       {/* Trending Hashtags */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-          <Hash size={20} className="text-[#1877F2]" />
+          <Hash size={20} className="text-primary" />
           Trending Hashtags
         </h2>
         <div className="flex flex-wrap gap-2">
           {trendingHashtags.map((tag) => (
             <button
               key={tag}
-              className="px-4 py-2 bg-[#1877F2]/10 dark:bg-[#1877F2]/20 rounded-full text-sm text-[#1877F2] hover:bg-[#1877F2]/20 dark:hover:bg-[#1877F2]/30 transition-colors"
+              className="px-4 py-2 bg-primary/10 dark:bg-primary/20 rounded-full text-sm text-primary hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors"
             >
               {tag}
             </button>

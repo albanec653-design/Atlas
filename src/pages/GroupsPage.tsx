@@ -70,7 +70,7 @@ function GroupCard({ group, onOpen }: { group: Group; onOpen: () => void }) {
   const PrivacyIcon = group.privacy === 'public' ? Globe2 : Lock;
   return (
     <button onClick={onOpen} className="atlas-card overflow-hidden text-left hover:shadow-md transition-shadow">
-      <div className="h-28 bg-gradient-to-br from-[#1877F2] to-[#42b72a] relative">
+      <div className="h-28 bg-gradient-to-br from-primary to-[#42b72a] relative">
         {group.cover_url && <img src={group.cover_url} alt="" className="w-full h-full object-cover" />}
         <span className="absolute top-2 right-2 bg-white/90 text-gray-700 text-xs rounded-full px-2 py-0.5 flex items-center gap-1">
           <PrivacyIcon size={12} /> {group.privacy}
@@ -106,7 +106,7 @@ function CreateGroupModal({ onClose, onCreated }: { onClose: () => void; onCreat
   return (
     <Modal open onClose={onClose} title="Create group">
       <div className="p-5 space-y-4">
-        <div className="h-32 rounded-lg bg-gradient-to-br from-[#1877F2] to-[#42b72a] flex items-center justify-center text-white/80 text-sm">
+        <div className="h-32 rounded-lg bg-gradient-to-br from-primary to-[#42b72a] flex items-center justify-center text-white/80 text-sm">
           {coverUrl ? <img src={coverUrl} alt="" className="w-full h-full object-cover rounded-lg" /> : 'Cover photo preview'}
         </div>
         <input className="atlas-input" placeholder="Cover image URL (optional)" value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} />
@@ -114,7 +114,7 @@ function CreateGroupModal({ onClose, onCreated }: { onClose: () => void; onCreat
         <textarea className="atlas-input" rows={3} placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
         <div className="flex gap-2">
           {(['public', 'private'] as const).map((p) => (
-            <button key={p} onClick={() => setPrivacy(p)} className={classNames('flex-1 p-3 rounded-lg border-2 text-left', privacy === p ? 'border-[#1877F2] bg-[#e7f0fd]' : 'border-gray-200')}>
+            <button key={p} onClick={() => setPrivacy(p)} className={classNames('flex-1 p-3 rounded-lg border-2 text-left', privacy === p ? 'border-primary bg-[#e7f0fd]' : 'border-gray-200')}>
               <p className="font-semibold capitalize flex items-center gap-1.5">{p === 'public' ? <Globe2 size={16} /> : <Lock size={16} />} {p}</p>
               <p className="text-xs text-gray-500">{p === 'public' ? 'Anyone can find and join' : 'Only invited people'}</p>
             </button>
@@ -175,7 +175,7 @@ export function GroupDetailPage({ groupId }: { groupId: string }) {
   return (
     <div className="max-w-5xl mx-auto pb-8">
       <div className="atlas-card overflow-hidden">
-        <div className="h-48 sm:h-64 bg-gradient-to-r from-[#1877F2] to-[#42b72a] relative">
+        <div className="h-48 sm:h-64 bg-gradient-to-r from-primary to-[#42b72a] relative">
           {group.cover_url && <img src={group.cover_url} alt="" className="w-full h-full object-cover" />}
         </div>
         <div className="px-4 pb-4">

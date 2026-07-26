@@ -103,7 +103,7 @@ export function TopBar() {
               onClick={() => navigate({ name: item.name })}
               className={classNames(
                 'px-6 lg:px-8 py-2 rounded-lg flex items-center justify-center transition-colors relative',
-                isActive(item.name) ? 'text-[#1877F2] border-b-2 border-[#1877F2]' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
+                isActive(item.name) ? 'text-primary border-b-2 border-primary' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
               )}
               title={item.label}
             >
@@ -173,14 +173,14 @@ export function TopBar() {
           <button
             key={item.name}
             onClick={() => navigate({ name: item.name })}
-            className={classNames('py-2 px-4 flex items-center justify-center', isActive(item.name) ? 'text-[#1877F2] border-t-2 border-[#1877F2]' : 'text-gray-600 dark:text-gray-400')}
+            className={classNames('py-2 px-4 flex items-center justify-center', isActive(item.name) ? 'text-primary border-t-2 border-primary' : 'text-gray-600 dark:text-gray-400')}
           >
             <item.icon size={22} />
           </button>
         ))}
-        <button onClick={() => navigate({ name: 'notifications' })} className={classNames('py-2 px-4 relative', page.name === 'notifications' && 'text-[#1877F2]')}>
+        <button onClick={() => navigate({ name: 'notifications' })} className={classNames('py-2 px-4 relative', page.name === 'notifications' && 'text-primary')}>
           <Bell size={22} />
-          {unread > 0 && <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] rounded-full min-w-[14px] h-[14px] flex items-center justify-center">{unread}</span>}
+          {unread > 0 && <span className="absolute top-1 right-1 bg-primary text-white text-[10px] rounded-full min-w-[14px] h-[14px] flex items-center justify-center">{unread}</span>}
         </button>
       </nav>
     </header>

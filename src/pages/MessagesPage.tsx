@@ -169,7 +169,7 @@ export function MessagesPage({ initialUserId }: { initialUserId?: string }) {
                 return (
                   <div key={m.id} className={classNames('flex items-end gap-2', mine ? 'justify-end' : 'justify-start')}>
                     {!mine && <Avatar profile={m.sender ?? activeOther ?? { avatar_url: null, full_name: '?' }} size="sm" />}
-                    <div className={classNames('max-w-[70%] rounded-2xl px-3 py-2', mine ? 'bg-[#1877F2] text-white rounded-br-sm' : 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm')}>
+                    <div className={classNames('max-w-[70%] rounded-2xl px-3 py-2', mine ? 'bg-primary text-white rounded-br-sm' : 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm')}>
                       <p className="text-sm whitespace-pre-wrap break-words">{m.content}</p>
                       {m.image_url && <img src={m.image_url} alt="" className="mt-1 rounded-lg max-h-48" />}
                       <p className={classNames('text-[10px] mt-1', mine ? 'text-blue-100' : 'text-gray-400')}>{timeAgo(m.created_at)}</p>
@@ -185,12 +185,12 @@ export function MessagesPage({ initialUserId }: { initialUserId?: string }) {
                 <ImageIcon size={20} />
               </button>
               <input
-                className="flex-1 bg-gray-100 rounded-full px-4 py-2.5 outline-none text-sm focus:bg-white focus:ring-1 focus:ring-[#1877F2]"
+                className="flex-1 bg-gray-100 rounded-full px-4 py-2.5 outline-none text-sm focus:bg-white focus:ring-1 focus:ring-primary"
                 placeholder="Type a message…"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               />
-              <button type="submit" disabled={!text.trim()} className="text-[#1877F2] disabled:text-gray-300 p-2">
+              <button type="submit" disabled={!text.trim()} className="text-primary disabled:text-gray-300 p-2">
                 <Send size={22} />
               </button>
             </form>

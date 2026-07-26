@@ -106,7 +106,7 @@ export function FriendsPage() {
               onClick={() => setTab(t.id)}
               className={classNames(
                 'flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-left mb-0.5',
-                tab === t.id ? 'bg-[#e7f0fd] text-[#1877F2]' : 'hover:bg-gray-100 text-gray-700',
+                tab === t.id ? 'bg-[#e7f0fd] text-primary' : 'hover:bg-gray-100 text-gray-700',
               )}
             >
               <t.icon size={20} />
@@ -267,7 +267,7 @@ function PersonCard({
         <button onClick={onOpen} className="font-semibold text-gray-900 hover:underline block truncate">{profile.full_name}</button>
         <p className="text-xs text-gray-500 mb-2">@{profile.username}</p>
         <div className="flex gap-2">
-          <button onClick={onAction} disabled={disabled} className={classNames('flex-1 text-sm py-1.5 rounded-lg font-medium', danger ? 'bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600' : 'bg-[#1877F2] hover:bg-[#0f5fc7] text-white', disabled && 'opacity-60')}>
+          <button onClick={onAction} disabled={disabled} className={classNames('flex-1 text-sm py-1.5 rounded-lg font-medium', danger ? 'bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600' : 'bg-primary hover:bg-[#0f5fc7] text-white', disabled && 'opacity-60')}>
             {actionLabel}
           </button>
           {secondaryLabel && onSecondary && (

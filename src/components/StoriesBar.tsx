@@ -79,10 +79,10 @@ export function StoriesBar() {
             {profile?.cover_url ? (
               <img src={profile.cover_url} alt="" className="w-full h-2/3 object-cover" />
             ) : (
-              <div className="w-full h-2/3 bg-gradient-to-br from-[#1877F2] to-[#42b72a] opacity-80" />
+              <div className="w-full h-2/3 bg-gradient-to-br from-primary to-[#42b72a] opacity-80" />
             )}
             <div className="absolute bottom-0 left-0 right-0 bg-white pt-4 pb-1 text-center">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center border-4 border-white">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white">
                 <Plus size={16} />
               </div>
               <p className="text-xs font-semibold text-gray-800">Create story</p>
@@ -102,12 +102,12 @@ export function StoriesBar() {
                 {first.image_url ? (
                   <img src={first.image_url} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center p-4 text-center" style={{ background: first.background_color ?? '#1877F2' }}>
+                  <div className="w-full h-full flex items-center justify-center p-4 text-center" style={{ background: first.background_color ?? 'primary' }}>
                     <p className="text-white font-semibold text-sm whitespace-pre-wrap">{first.content}</p>
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className={classNames('absolute top-2 left-2 p-0.5 rounded-full', viewed ? 'bg-gray-400' : 'bg-[#1877F2]')}>
+                <div className={classNames('absolute top-2 left-2 p-0.5 rounded-full', viewed ? 'bg-gray-400' : 'bg-primary')}>
                   <Avatar profile={g.author} size="xs" />
                 </div>
                 <p className="absolute bottom-2 left-2 right-2 text-white text-xs font-semibold truncate text-left drop-shadow">
@@ -193,7 +193,7 @@ function StoryViewer({
         {story.image_url ? (
           <img src={story.image_url} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center p-8 text-center" style={{ background: story.background_color ?? '#1877F2' }}>
+          <div className="w-full h-full flex items-center justify-center p-8 text-center" style={{ background: story.background_color ?? 'primary' }}>
             <p className="text-white font-bold text-2xl whitespace-pre-wrap leading-snug">{story.content}</p>
           </div>
         )}
@@ -206,10 +206,10 @@ function StoryComposer({ onClose, onCreated }: { onClose: () => void; onCreated:
   const { profile } = useAuth();
   const [text, setText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [bg, setBg] = useState('#1877F2');
+  const [bg, setBg] = useState('primary');
   const [submitting, setSubmitting] = useState(false);
 
-  const BGS = ['#1877F2', '#42b72a', '#f02849', '#9b3ee8', '#ff6b6b', '#1a535c'];
+  const BGS = ['primary', '#42b72a', '#f02849', '#9b3ee8', '#ff6b6b', '#1a535c'];
 
   const handlePost = async () => {
     if (!text.trim() && !imageUrl.trim()) return;
@@ -256,7 +256,7 @@ function StoryComposer({ onClose, onCreated }: { onClose: () => void; onCreated:
           {!imageUrl && (
             <div className="flex gap-2 mb-3">
               {BGS.map((c) => (
-                <button key={c} onClick={() => setBg(c)} className={classNames('w-7 h-7 rounded-full border-2', bg === c ? 'border-[#1877F2] scale-110' : 'border-gray-200')} style={{ background: c }} />
+                <button key={c} onClick={() => setBg(c)} className={classNames('w-7 h-7 rounded-full border-2', bg === c ? 'border-primary scale-110' : 'border-gray-200')} style={{ background: c }} />
               ))}
             </div>
           )}

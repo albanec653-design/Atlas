@@ -5,13 +5,13 @@ export function Logo({ size = 32, className, withText = false }: { size?: number
   return (
     <div className={classNames('flex items-center gap-2', className)}>
       <div
-        className="bg-[#1877F2] rounded-xl flex items-center justify-center text-white shadow-sm"
+        className="bg-accent rounded-xl flex items-center justify-center text-white shadow-sm"
         style={{ width: size, height: size }}
       >
         <Globe2 size={size * 0.6} strokeWidth={2.5} />
       </div>
       {withText && (
-        <span className="text-2xl font-extrabold text-[#1877F2] tracking-tight">Atlas</span>
+        <span className="text-2xl font-extrabold text-accent tracking-tight">Atlas</span>
       )}
     </div>
   );

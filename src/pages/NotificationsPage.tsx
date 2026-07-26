@@ -21,10 +21,10 @@ const ICON: Record<Notification['type'], typeof Heart> = {
 const COLOR: Record<Notification['type'], string> = {
   like: 'bg-red-500',
   reaction: 'bg-red-500',
-  comment: 'bg-[#1877F2]',
-  friend_request: 'bg-[#1877F2]',
+  comment: 'bg-primary',
+  friend_request: 'bg-primary',
   friend_accept: 'bg-green-500',
-  message: 'bg-[#1877F2]',
+  message: 'bg-primary',
   group_invite: 'bg-amber-500',
   tag: 'bg-amber-500',
 };
@@ -69,7 +69,7 @@ export function NotificationsPage() {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
         {unreadCount > 0 && (
-          <button onClick={handleMarkAll} className="flex items-center gap-1.5 text-sm text-[#1877F2] hover:underline">
+          <button onClick={handleMarkAll} className="flex items-center gap-1.5 text-sm text-primary hover:underline">
             <CheckCheck size={16} /> Mark all as read
           </button>
         )}
@@ -82,7 +82,7 @@ export function NotificationsPage() {
             onClick={() => setFilter(f)}
             className={classNames(
               'px-4 py-1.5 rounded-full text-sm font-medium',
-              filter === f ? 'bg-[#1877F2] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100',
+              filter === f ? 'bg-primary text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100',
             )}
           >
             {f === 'all' ? 'All' : `Unread (${unreadCount})`}
@@ -125,7 +125,7 @@ export function NotificationsPage() {
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">{timeAgo(n.created_at)}</p>
               </div>
-              {!n.read && <span className="w-2.5 h-2.5 rounded-full bg-[#1877F2] shrink-0" />}
+              {!n.read && <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0" />}
             </button>
           );
         })}

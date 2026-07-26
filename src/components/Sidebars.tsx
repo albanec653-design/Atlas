@@ -44,7 +44,7 @@ export function LeftSidebar() {
             onClick={it.action}
             className="flex items-center gap-3 w-full px-2 py-2 rounded-lg hover:bg-gray-200/70 text-left"
           >
-            <span className="w-9 h-9 rounded-full bg-gray-200 text-[#1877F2] flex items-center justify-center">
+            <span className="w-9 h-9 rounded-full bg-gray-200 text-primary flex items-center justify-center">
               <it.icon size={20} />
             </span>
             <span className="font-medium text-gray-800">{it.label}</span>

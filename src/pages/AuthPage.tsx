@@ -45,24 +45,24 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e7f0fd] via-[#f0f2f5] to-[#e7f0fd] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center p-4">
       <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center">
         {/* Left hero */}
         <div className="hidden md:block px-6">
           <div className="flex items-center gap-3 mb-6">
             <Logo size={56} />
-            <span className="text-5xl font-extrabold text-[#1877F2] tracking-tight">Atlas</span>
+            <span className="text-5xl font-extrabold text-accent tracking-tight">Atlas</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 leading-tight mb-3">
+          <h1 className="text-3xl font-bold text-white leading-tight mb-3">
             Connect with the people and things that matter to you.
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed">
+          <p className="text-lg text-gray-400 leading-relaxed">
             Share posts, build your community, follow friends, join groups, message in real time, and never miss a moment.
           </p>
-          <ul className="mt-8 space-y-3 text-gray-700">
+          <ul className="mt-8 space-y-3 text-gray-300">
             {['A personalized feed of posts from friends and groups', 'Real-time messaging and notifications', 'Stories, reactions, comments and more'].map((f) => (
               <li key={f} className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#1877F2]" />
+                <span className="w-2 h-2 rounded-full bg-primary" />
                 {f}
               </li>
             ))}
@@ -73,12 +73,12 @@ export function AuthPage() {
         <div className="atlas-card p-6 sm:p-8 max-w-md w-full mx-auto">
           <div className="md:hidden flex items-center justify-center gap-2 mb-6">
             <Logo size={40} />
-            <span className="text-3xl font-extrabold text-[#1877F2] tracking-tight">Atlas</span>
+            <span className="text-3xl font-extrabold text-accent tracking-tight">Atlas</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">
+          <h2 className="text-2xl font-bold text-white mb-1">
             {mode === 'login' ? 'Log in to Atlas' : 'Create a new account'}
           </h2>
-          <p className="text-gray-500 text-sm mb-6">
+          <p className="text-gray-400 text-sm mb-6">
             {mode === 'login' ? 'Welcome back. Enter your details to continue.' : "It's quick and easy."}
           </p>
 
@@ -119,7 +119,7 @@ export function AuthPage() {
             />
 
             {error && (
-              <div className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 border border-red-100">
+              <div className="text-sm text-primary bg-primary/10 rounded-lg px-3 py-2 border border-primary/30">
                 {error}
               </div>
             )}
@@ -129,7 +129,7 @@ export function AuthPage() {
             </button>
           </form>
 
-          <div className="my-5 border-t border-gray-200" />
+          <div className="my-5 border-t border-gray-700" />
 
           <button
             onClick={() => {

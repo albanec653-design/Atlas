@@ -52,7 +52,7 @@ export function AvatarWithInitials({ name, size = 'md', className }: { name: str
   return (
     <div
       className={classNames(
-        'rounded-full bg-[#1877F2] text-white flex items-center justify-center font-semibold shrink-0',
+        'rounded-full bg-primary text-white flex items-center justify-center font-semibold shrink-0',
         sizeMap[size],
         className,
       )}

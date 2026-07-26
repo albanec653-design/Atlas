@@ -92,7 +92,7 @@ export function ProfilePage({ userId }: { userId: string }) {
     <div className="max-w-5xl mx-auto pb-8">
       {/* cover + avatar */}
       <div className="atlas-card overflow-hidden">
-        <div className="relative h-48 sm:h-64 bg-gradient-to-r from-[#1877F2] to-[#42b72a]">
+        <div className="relative h-48 sm:h-64 bg-gradient-to-r from-primary to-[#42b72a]">
           {profile.cover_url && <img src={profile.cover_url} alt="" className="w-full h-full object-cover" />}
           {isMe && (
             <button className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-gray-800 rounded-lg px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow">
@@ -168,7 +168,7 @@ export function ProfilePage({ userId }: { userId: string }) {
                 onClick={() => setTab(t)}
                 className={classNames(
                   'px-4 py-3 font-medium capitalize border-b-2 -mb-px',
-                  tab === t ? 'border-[#1877F2] text-[#1877F2]' : 'border-transparent text-gray-600 hover:bg-gray-100',
+                  tab === t ? 'border-primary text-primary' : 'border-transparent text-gray-600 hover:bg-gray-100',
                 )}
               >
                 {t}

@@ -63,7 +63,7 @@ export function CommentSection({
           <button
             type="submit"
             disabled={!text.trim() || submitting}
-            className="text-[#1877F2] disabled:text-gray-300 p-1"
+            className="text-primary disabled:text-gray-300 p-1"
             aria-label="Send comment"
           >
             <Send size={18} />
@@ -140,7 +140,7 @@ function CommentItem({
                 onChange={(e) => setReplyText(e.target.value)}
                 autoFocus
               />
-              <button type="submit" disabled={!replyText.trim() || submitting} className="text-[#1877F2] disabled:text-gray-300">
+              <button type="submit" disabled={!replyText.trim() || submitting} className="text-primary disabled:text-gray-300">
                 <Send size={16} />
               </button>
             </div>

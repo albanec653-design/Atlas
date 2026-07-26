@@ -90,12 +90,12 @@ export function MarketplacePage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <ShoppingBag className="text-[#1877F2]" />
+              <ShoppingBag className="text-primary" />
               Marketplace
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">Buy and sell in your local area</p>
           </div>
-          <button className="bg-[#1877F2] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#166FE5] transition-colors">
+          <button className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-[#166FE5] transition-colors">
             + Sell Item
           </button>
         </div>
@@ -108,7 +108,7 @@ export function MarketplacePage() {
             placeholder="Search marketplace..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1877F2] dark:text-white"
+            className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-primary dark:text-white"
           />
         </div>
       </div>
@@ -123,7 +123,7 @@ export function MarketplacePage() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === cat
-                  ? 'bg-[#1877F2] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
@@ -139,7 +139,7 @@ export function MarketplacePage() {
               onClick={() => setSelectedCondition(cond)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                 selectedCondition === cond
-                  ? 'bg-[#1877F2] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
@@ -178,7 +178,7 @@ export function MarketplacePage() {
                     <h3 className="font-semibold text-gray-900 dark:text-white text-sm line-clamp-2 flex-1">
                       {item.title}
                     </h3>
-                    <span className="text-lg font-bold text-[#1877F2] ml-2 flex-shrink-0">
+                    <span className="text-lg font-bold text-primary ml-2 flex-shrink-0">
                       €{item.price}
                     </span>
                   </div>

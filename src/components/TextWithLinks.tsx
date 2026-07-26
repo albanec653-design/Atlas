@@ -25,8 +25,8 @@ export function TextWithLinks({ text, className = '' }: { text: string | null; c
 
         const isHashtag = segment.type === 'hashtag';
         const colorClass = isHashtag
-          ? 'text-[#1877F2] hover:underline cursor-pointer font-medium'
-          : 'text-[#1877F2] hover:underline cursor-pointer font-medium';
+          ? 'text-primary hover:underline cursor-pointer font-medium'
+          : 'text-primary hover:underline cursor-pointer font-medium';
 
         return (
           <span

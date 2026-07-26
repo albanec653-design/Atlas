@@ -7,7 +7,7 @@ import { createPost } from '@/lib/data';
 import { classNames } from '@/lib/utils';
 
 const BACKGROUNDS = [
-  '#1877F2', '#42b72a', '#e4e6eb', '#f02849', '#9b3ee8',
+  'primary', '#42b72a', '#e4e6eb', '#f02849', '#9b3ee8',
   '#ff6b6b', '#4ecdc4', '#ffe66d', '#1a535c', '#f72585',
 ];
 
@@ -75,8 +75,8 @@ export function PostComposer({
           </button>
         </div>
         <div className="border-t border-gray-200 mt-3 pt-2 flex items-center justify-around">
-          <button onClick={() => { setOpen(true); setBg('#1877F2'); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
-            <Type size={20} className="text-[#1877F2]" /> Background
+          <button onClick={() => { setOpen(true); setBg('primary'); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
+            <Type size={20} className="text-primary" /> Background
           </button>
           <button onClick={() => { setOpen(true); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
             <ImageIcon size={20} className="text-green-500" /> Photo
@@ -121,7 +121,7 @@ export function PostComposer({
                       <button
                         key={v.value}
                         onClick={() => { setVisibility(v.value); setShowVisMenu(false); }}
-                        className={classNames('flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-gray-100', visibility === v.value ? 'text-[#1877F2] font-medium' : 'text-gray-700')}
+                        className={classNames('flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-gray-100', visibility === v.value ? 'text-primary font-medium' : 'text-gray-700')}
                       >
                         <v.icon size={14} /> {v.label}
                       </button>
@@ -161,7 +161,7 @@ export function PostComposer({
                 <button
                   key={c}
                   onClick={() => setBg(bg === c ? null : c)}
-                  className={classNames('w-7 h-7 rounded-full border-2', bg === c ? 'border-[#1877F2] scale-110' : 'border-gray-200')}
+                  className={classNames('w-7 h-7 rounded-full border-2', bg === c ? 'border-primary scale-110' : 'border-gray-200')}
                   style={{ background: c }}
                 />
               ))}

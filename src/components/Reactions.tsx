@@ -5,7 +5,7 @@ import { classNames } from '@/lib/utils';
 import { setReaction } from '@/lib/data';
 
 const REACTIONS: { type: ReactionType; label: string; icon: typeof ThumbsUp; color: string; bg: string }[] = [
-  { type: 'like', label: 'Like', icon: ThumbsUp, color: 'text-[#1877F2]', bg: 'bg-[#1877F2]' },
+  { type: 'like', label: 'Like', icon: ThumbsUp, color: 'text-primary', bg: 'bg-primary' },
   { type: 'love', label: 'Love', icon: Heart, color: 'text-red-500', bg: 'bg-red-500' },
   { type: 'haha', label: 'Haha', icon: Laugh, color: 'text-amber-500', bg: 'bg-amber-500' },
   { type: 'wow', label: 'Wow', icon: Smile, color: 'text-amber-500', bg: 'bg-amber-500' },
