@@ -19,6 +19,7 @@ export type Post = {
   author_id: string;
   content: string | null;
   image_url: string | null;
+  video_url: string | null;
   background_color: string | null;
   visibility: 'public' | 'friends' | 'private';
   group_id: string | null;

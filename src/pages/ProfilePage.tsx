@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Camera, Pencil, MapPin, Briefcase, GraduationCap, Calendar, Link2, Phone, MessageCircle, UserPlus, UserCheck, UserX, Clock, Loader2 } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Camera, Pencil, MapPin, Briefcase, GraduationCap, Calendar, Link2, Phone, MessageCircle, UserPlus, UserCheck, UserX, Clock, Loader2, Upload } from 'lucide-react';
 import type { Profile, Post, Friendship } from '@/lib/types';
 import { Avatar } from '@/components/Avatar';
 import { PostComposer } from '@/components/PostComposer';
@@ -13,6 +13,7 @@ import {
   fetchFriendRequests,
 } from '@/lib/data';
 import { fullName, formatBirthDate, classNames } from '@/lib/utils';
+import { uploadFile, validateFile, isImage } from '@/lib/storage';
 
 export function ProfilePage({ userId }: { userId: string }) {
   const { user, profile: me, refreshProfile } = useAuth();
@@ -25,8 +26,77 @@ export function ProfilePage({ userId }: { userId: string }) {
   const [editing, setEditing] = useState(false);
   const [tab, setTab] = useState<'posts' | 'friends' | 'about'>('posts');
   const [pendingRequest, setPendingRequest] = useState<Friendship | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
 
   const isMe = user?.id === userId;
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!isImage(file)) {
+      alert('Please select an image file');
+      return;
+    }
+
+    const validation = validateFile(file, ['jpg', 'jpeg', 'png', 'gif', 'webp'], 10);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadFile('profiles', file, user.id);
+      if (result) {
+        await updateProfile(user.id, { avatar_url: result.url });
+        await refreshProfile();
+        if (isMe) {
+          setProfile(prev => prev ? { ...prev, avatar_url: result.url } : null);
+        }
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload avatar');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!isImage(file)) {
+      alert('Please select an image file');
+      return;
+    }
+
+    const validation = validateFile(file, ['jpg', 'jpeg', 'png', 'gif', 'webp'], 10);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadFile('profiles', file, user.id);
+      if (result) {
+        await updateProfile(user.id, { cover_url: result.url });
+        await refreshProfile();
+        if (isMe) {
+          setProfile(prev => prev ? { ...prev, cover_url: result.url } : null);
+        }
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload cover photo');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -95,9 +165,22 @@ export function ProfilePage({ userId }: { userId: string }) {
         <div className="relative h-48 sm:h-64 bg-gradient-to-r from-primary to-[#42b72a]">
           {profile.cover_url && <img src={profile.cover_url} alt="" className="w-full h-full object-cover" />}
           {isMe && (
-            <button className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-gray-800 rounded-lg px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow">
-              <Camera size={16} /> Edit cover
-            </button>
+            <>
+              <button 
+                onClick={() => coverInputRef.current?.click()}
+                disabled={uploading}
+                className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-gray-800 rounded-lg px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow disabled:opacity-50"
+              >
+                <Camera size={16} /> {uploading ? 'Uploading…' : 'Edit cover'}
+              </button>
+              <input
+                ref={coverInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleCoverUpload}
+                className="hidden"
+              />
+            </>
           )}
         </div>
         <div className="px-4 pb-4">
@@ -107,9 +190,22 @@ export function ProfilePage({ userId }: { userId: string }) {
                 <Avatar profile={profile} size="2xl" />
               </div>
               {isMe && (
-                <button className="absolute bottom-1 right-1 bg-gray-700 hover:bg-gray-800 text-white rounded-full p-2 border-2 border-white">
-                  <Camera size={16} />
-                </button>
+                <>
+                  <button 
+                    onClick={() => avatarInputRef.current?.click()}
+                    disabled={uploading}
+                    className="absolute bottom-1 right-1 bg-gray-700 hover:bg-gray-800 text-white rounded-full p-2 border-2 border-white disabled:opacity-50"
+                  >
+                    <Camera size={16} />
+                  </button>
+                  <input
+                    ref={avatarInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    className="hidden"
+                  />
+                </>
               )}
             </div>
             <div className="flex-1 sm:pb-2">

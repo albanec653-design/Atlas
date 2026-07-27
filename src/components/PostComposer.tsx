@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Image as ImageIcon, Smile, Globe2, X, Type, Eye, Users, Lock } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Image as ImageIcon, Smile, Globe2, X, Type, Eye, Users, Lock, Video, Upload } from 'lucide-react';
 import type { Post, ReactionType } from '@/lib/types';
 import { Avatar } from '@/components/Avatar';
 import { useAuth } from '@/context/AuthContext';
 import { createPost } from '@/lib/data';
 import { classNames } from '@/lib/utils';
+import { uploadFile, validateFile, isImage, isVideo } from '@/lib/storage';
 
 const BACKGROUNDS = [
   'primary', '#42b72a', '#e4e6eb', '#f02849', '#9b3ee8',
@@ -26,24 +27,87 @@ export function PostComposer({
   groupId?: string | null;
   placeholder?: string;
 }) {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
   const [bg, setBg] = useState<string | null>(null);
   const [visibility, setVisibility] = useState<'public' | 'friends' | 'private'>('public');
   const [showVisMenu, setShowVisMenu] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
-  if (!profile) return null;
+  if (!profile || !user) return null;
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!isImage(file)) {
+      alert('Please select an image file');
+      return;
+    }
+
+    const validation = validateFile(file, ['jpg', 'jpeg', 'png', 'gif', 'webp'], 50);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadFile('posts', file, user.id);
+      if (result) {
+        setImageUrl(result.url);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleVideoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!isVideo(file)) {
+      alert('Please select a video file');
+      return;
+    }
+
+    const validation = validateFile(file, ['mp4', 'webm', 'mov', 'avi'], 50);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadFile('posts', file, user.id);
+      if (result) {
+        setVideoUrl(result.url);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload video');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async () => {
-    if (!text.trim() && !imageUrl.trim()) return;
+    if (!text.trim() && !imageUrl.trim() && !videoUrl.trim()) return;
     setSubmitting(true);
     try {
       const post = await createPost({
         content: bg ? text.trim() : text.trim() || null,
         image_url: imageUrl.trim() || null,
+        video_url: videoUrl.trim() || null,
         background_color: bg,
         visibility,
         group_id: groupId,
@@ -52,6 +116,7 @@ export function PostComposer({
         onCreated({ ...post, reaction_counts: { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }, viewer_reaction: null, comments: [] });
         setText('');
         setImageUrl('');
+        setVideoUrl('');
         setBg(null);
         setOpen(false);
       }
@@ -78,12 +143,29 @@ export function PostComposer({
           <button onClick={() => { setOpen(true); setBg('primary'); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
             <Type size={20} className="text-primary" /> Background
           </button>
-          <button onClick={() => { setOpen(true); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
+          <button onClick={() => { setOpen(true); fileInputRef.current?.click(); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
             <ImageIcon size={20} className="text-green-500" /> Photo
+          </button>
+          <button onClick={() => { setOpen(true); videoInputRef.current?.click(); }} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
+            <Video size={20} className="text-blue-500" /> Video
           </button>
           <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 text-sm font-medium">
             <Smile size={20} className="text-amber-500" /> Feeling
           </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <input
+            ref={videoInputRef}
+            type="file"
+            accept="video/*"
+            onChange={handleVideoSelect}
+            className="hidden"
+          />
         </div>
       </div>
     );
@@ -169,12 +251,44 @@ export function PostComposer({
             </div>
           </div>
 
-          {/* Image URL input */}
+          {/* File upload buttons */}
+          <div className="mt-3 flex gap-2">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 disabled:opacity-50"
+            >
+              <Upload size={18} /> {uploading ? 'Uploading…' : 'Upload Photo'}
+            </button>
+            <button
+              onClick={() => videoInputRef.current?.click()}
+              disabled={uploading}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 disabled:opacity-50"
+            >
+              <Video size={18} /> {uploading ? 'Uploading…' : 'Upload Video'}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <input
+              ref={videoInputRef}
+              type="file"
+              accept="video/*"
+              onChange={handleVideoSelect}
+              className="hidden"
+            />
+          </div>
+
+          {/* Image URL input (fallback) */}
           <div className="mt-3 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
             <ImageIcon size={18} className="text-green-500" />
             <input
               className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-500"
-              placeholder="Paste an image URL…"
+              placeholder="Or paste an image URL…"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
             />
@@ -182,7 +296,7 @@ export function PostComposer({
 
           <button
             onClick={handleSubmit}
-            disabled={submitting || (!text.trim() && !imageUrl.trim())}
+            disabled={submitting || uploading || (!text.trim() && !imageUrl.trim() && !videoUrl.trim())}
             className="atlas-btn-primary w-full mt-4 py-2.5"
           >
             {submitting ? 'Posting…' : 'Post'}

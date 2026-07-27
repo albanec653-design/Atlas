@@ -143,6 +143,13 @@ export function PostCard({ post, onDelete }: { post: Post; onDelete?: (id: strin
         </div>
       )}
 
+      {/* video */}
+      {post.video_url && (
+        <div className="w-full bg-black/5">
+          <video src={post.video_url} controls className="w-full max-h-[500px]" />
+        </div>
+      )}
+
       {/* reaction summary */}
       <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-500">
         <ReactionSummary counts={counts} />

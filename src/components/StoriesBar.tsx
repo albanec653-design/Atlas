@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Plus, X, ChevronLeft, ChevronRight, Eye, Camera } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, X, ChevronLeft, ChevronRight, Eye, Camera, Upload } from 'lucide-react';
 import type { Story, Profile, ReactionType } from '@/lib/types';
 import { Avatar } from '@/components/Avatar';
 import { useAuth } from '@/context/AuthContext';
 import { fetchStories, createStory, markStoryViewed } from '@/lib/data';
 import { classNames } from '@/lib/utils';
+import { uploadFile, validateFile, isImage } from '@/lib/storage';
 
 export function StoriesBar() {
   const { profile } = useAuth();
@@ -203,13 +204,44 @@ function StoryViewer({
 }
 
 function StoryComposer({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [text, setText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [bg, setBg] = useState('primary');
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const BGS = ['primary', '#42b72a', '#f02849', '#9b3ee8', '#ff6b6b', '#1a535c'];
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!isImage(file)) {
+      alert('Please select an image file');
+      return;
+    }
+
+    const validation = validateFile(file, ['jpg', 'jpeg', 'png', 'gif', 'webp'], 20);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadFile('stories', file, user.id);
+      if (result) {
+        setImageUrl(result.url);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handlePost = async () => {
     if (!text.trim() && !imageUrl.trim()) return;
@@ -261,9 +293,26 @@ function StoryComposer({ onClose, onCreated }: { onClose: () => void; onCreated:
             </div>
           )}
 
+          <div className="flex gap-2 mb-3">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 disabled:opacity-50"
+            >
+              <Upload size={18} /> {uploading ? 'Uploading…' : 'Upload Photo'}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+          </div>
+
           <input className="atlas-input mb-3" placeholder="Or paste an image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
 
-          <button onClick={handlePost} disabled={submitting || (!text.trim() && !imageUrl.trim())} className="atlas-btn-primary w-full">
+          <button onClick={handlePost} disabled={submitting || uploading || (!text.trim() && !imageUrl.trim())} className="atlas-btn-primary w-full">
             {submitting ? 'Sharing…' : 'Share story'}
           </button>
         </div>

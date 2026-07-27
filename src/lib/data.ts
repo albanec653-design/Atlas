@@ -52,6 +52,7 @@ export async function fetchSavedPosts(userId: string): Promise<Post[]> {
 export async function createPost(input: {
   content?: string | null;
   image_url?: string | null;
+  video_url?: string | null;
   background_color?: string | null;
   visibility?: 'public' | 'friends' | 'private';
   group_id?: string | null;
@@ -61,6 +62,7 @@ export async function createPost(input: {
     .insert({
       content: input.content ?? null,
       image_url: input.image_url ?? null,
+      video_url: input.video_url ?? null,
       background_color: input.background_color ?? null,
       visibility: input.visibility ?? 'public',
       group_id: input.group_id ?? null,
